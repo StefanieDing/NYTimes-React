@@ -4,6 +4,9 @@ var axios = require("axios");
 var nytAPI = "";
 
 var helper = {
+  runQuery: function(topic, startYear, endYear) {
+    var queryURL = "";
+  }
   getSaved: function(){
     return axios.get('/api/saved');
   },

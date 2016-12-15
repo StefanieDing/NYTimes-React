@@ -1,20 +1,17 @@
 var webpack = require('webpack');
 var path = require('path');
 
-var BUILD_DIR = path.resolve(__dirname, 'public');
-var APP_DIR = path.resolve(__dirname, 'app');
-
 var config = {
-  entry: APP_DIR + '/index.jsx',
+  entry: APP_DIR + './app/index.jsx',
   output: {
     path: BUILD_DIR,
-    filename: 'bundle.js'
+    filename: 'public/bundle.js'
   },
    module : {
     loaders : [
       {
         test : /\.jsx?/,
-        include : APP_DIR,
+        include : /app/,
         loader : 'babel',
         query: {
           // These are the specific transformations we'll be using.
