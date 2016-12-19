@@ -30,7 +30,7 @@ var Main = React.createClass({
       <div className="container">
 
         <div className="row">
-          <div className="card-panel center-align">
+          <div className="card-panel center-align indigo darken-3">
             <h2>New York Times Article Scrubber</h2>
             <h5>Search for and annotate articles of interest!</h5>
           </div>
