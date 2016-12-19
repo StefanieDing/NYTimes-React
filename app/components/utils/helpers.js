@@ -8,12 +8,17 @@ var helper = {
     console.log(query);
     var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + nytAPI + "&q="+ "&begin_date=" + query.startYear + "0101" + "&begin_date=" + query.endYear + "0231";
     return axios.get(queryURL).then(function(response) {
-      // If get get a result, return that result's formatted address property
+      var results = [];
+      // If get a result, return that result's formatted address property
       if (response.data.results[0]) {
-        return response.data.results[0].formatted;
+        for(var i = 0; i<5; i++){
+          results.push(response.data.results[i].formatted);
+        }
+        return results;
+      } else{
+        // If we don't get any results, return an empty string
+        return "No articles found.";
       }
-      // If we don't get any results, return an empty string
-      return "";
     });
   },
   getSaved: function(){
