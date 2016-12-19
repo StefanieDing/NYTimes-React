@@ -10,7 +10,7 @@ var Saved = React.createClass({
       <div className="panel card center-align">
         <h3 className="panelTitle">Saved</h3>
         
-        <div className="savedBox card">
+        <div className="savedBox">
           <h5 className="left-align">{this.props.saved}</h5>
           <button className="waves-effect waves-light btn right-align">Remove</button>
         </div>

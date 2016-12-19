@@ -36,7 +36,7 @@ app.get("/", function(req, res) {
 app.get("/api/saved", function(req, res){
   Article.find({}).sort([
     ["date", "descending"]
-  ]).exec(function(err, doc){
+  ]).limit(5).exec(function(err, doc){
     if(err){
       console.log(err);
     } else{
@@ -46,7 +46,17 @@ app.get("/api/saved", function(req, res){
 });
 
 app.post("/api/saved", function(req, res){
-
+  Article.create({
+    title: req.body.title,
+    date: Date.now(),
+    url: req.body.url
+  }, function(err) {
+    if(err){
+      console.log(err);
+    } else{
+      res.send("Saved Your Article");
+    }
+  });
 });
 
 app.delete("/api/saved/:id", function(req, res){

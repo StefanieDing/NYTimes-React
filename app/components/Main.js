@@ -10,15 +10,43 @@ var helpers = require("./utils/helpers");
 //creating Main Component
 var Main = React.createClass({
   getInitialState: function(){
-    return { search: [], results: [], saved: []};
+    return { search: {}, results: [], saved: []};
   },
   //loads when page is ready
   componentDidMount: function(){
-
+    //gets all saved articles
+    helpers.getSaved().then(function(response) {
+      console.log(response);
+      if (response !== this.state.saved) {
+        console.log("Saved", response.data);
+        this.setState({ saved: response.data });
+      }
+    }.bind(this));
   },
   //any time a component changes, it updates
   componentDidUpdate: function(){
+    // Run the query for the address
+    helpers.runQuery(this.state.search).then(function(data) {
+      if (data !== this.state.results) {
+        console.log("Results", data);
+        this.setState({ results: data });
 
+        // After we've received the result... then post the search term to our history.
+        helpers.postSaved(this.state.search).then(function() {
+          console.log("Updated!");
+
+          // After we've done the post... then get the updated history
+          helpers.getSaved().then(function(response) {
+            console.log("Current Saved", response.data);
+
+            console.log("Saved", response.data);
+
+            this.setState({ saved: response.data });
+
+          }.bind(this));
+        }.bind(this));
+      }
+    }.bind(this));
   },
   //lets children update to parent
   setTerm: function(term){
@@ -30,7 +58,7 @@ var Main = React.createClass({
       <div className="container">
 
         <div className="row">
-          <div className="card-panel center-align indigo darken-3">
+          <div className="card-panel panelTitle center-align">
             <h2>New York Times Article Scrubber</h2>
             <h5>Search for and annotate articles of interest!</h5>
           </div>

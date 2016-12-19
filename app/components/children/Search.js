@@ -20,28 +20,23 @@ var Search = React.createClass({
   // Render the function
   render: function() {
     return (
-      <div className="panel card center-align">
+      <div className="card center-align">
         <h3 className="panelTitle">Search</h3>
 
-        <form className="card-panel col s12" onSubmit={this.handleSubmit}>
-          <div className="row">
-            <div className="input-field">
-              <input type="text" placeholder="Topic" id="topic" onChange={this.handleChange} className="validate" required></input>
-            </div>
+        <form className="card-panel" onSubmit={this.handleSubmit}>
+         
+          <div className="input-field">
+            <input type="text" placeholder="Topic (required)" id="topic" onChange={this.handleChange} className="validate" required></input>
+          </div>
+       
+          <div className="input-field">
+            <input type="number" maxlength="4" placeholder="Start Year (required)" id="startYear" onChange={this.handleChange} className="validate" required></input>
           </div>
 
-          <div className="row">
-            <div className="input-field">
-              <input type="text" placeholder="Start Year" id="startYear" onChange={this.handleChange} className="validate" required></input>
-            </div>
+          <div className="input-field">
+            <input type="number" maxlength="4" placeholder="End Year (required)" id="endYear" onChange={this.handleChange} className="validate" required></input>
           </div>
-
-          <div className="row">
-            <div className="input-field">
-              <input type="text" placeholder="End Year" id="endYear" onChange={this.handleChange} className="validate" required></input>
-            </div>
-          </div>
-
+       
           <br></br>
           <button className="waves-effect waves-light btn" type="submit">Submit</button>
         </form>

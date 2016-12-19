@@ -10,7 +10,7 @@ var Results = React.createClass({
       <div className="panel card center-align">
         <h3 className="panelTitle">Results</h3>
         
-        <div className="resultBox card">
+        <div className="resultBox">
           <h5 className="left-align">{this.props.results}</h5>
           <button className="waves-effect waves-light btn right-align">Save</button>
         </div>
