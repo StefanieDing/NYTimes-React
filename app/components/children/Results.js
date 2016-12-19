@@ -1,14 +1,14 @@
 // Include React
 var React = require("react");
 
-var helpers = require("./utils/helpers");
+var helpers = require("../utils/helpers");
 
 // Creating the Results component
 var Results = React.createClass({
   handleSave: function(event){
     helpers.postSaved(article).then(function(response){
       console.log("Saved article");
-    }.bind(this)});
+    }.bind(this));
   },
   //Render the function
   render: function() {
@@ -20,8 +20,8 @@ var Results = React.createClass({
           {/* Here we use a map function to loop through an array in JSX */}
             {this.props.results.map(function(search, i) {
                 return (
-                  <li key={search._id} }>
-                    <strong><a href={search.web_url} className="left-align" target="_blank" }>{search.title}</a></strong>
+                  <li key={search._id}>
+                    <strong><a href={search.web_url} className="left-align" target="_blank">{search.title}</a></strong>
                       <i> {search.date.substring(0,10)}</i>
                     <span>
                       <button className="waves-effect waves-light btn right-align" onClick={this.handleSave} value={search._id}>Save</button>

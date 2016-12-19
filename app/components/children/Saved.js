@@ -1,7 +1,7 @@
 // Include React
 var React = require("react");
 
-var helpers = require("./utils/helpers");
+var helpers = require("../utils/helpers");
 
 // Creating the Saved component
 var Saved = React.createClass({
@@ -11,7 +11,7 @@ var Saved = React.createClass({
 
     helpers.deleteSaved(articleID).then(function(response){
       console.log("Deleted article");
-    }.bind(this)});
+    }.bind(this));
   },
   //Render the function
   render: function() {
@@ -23,8 +23,8 @@ var Saved = React.createClass({
           {/* Here we use a map function to loop through an array in JSX */}
           {this.props.saved.map(function(search, i) {
               return (
-                <li key={search._id} }>
-                  <strong><a href={search.web_url} className="left-align" target="_blank" }>{search.title}</a></strong>
+                <li key={search._id}>
+                  <strong><a href={search.web_url} className="left-align" target="_blank">{search.title}</a></strong>
                     <i> {search.pub_date.substring(0,10)}</i>
                   <span>
                     <button className="waves-effect waves-light btn right-align" onClick={this.handleDelete} value={search._id}>Remove</button>
