@@ -10,7 +10,7 @@ var helpers = require("./utils/helpers");
 //creating Main Component
 var Main = React.createClass({
   getInitialState: function(){
-    return { search: {}, results: [], saved: []};
+    return { search: ["","",""], results: [], saved: []};
   },
   //loads when page is ready
   componentDidMount: function(){
@@ -49,8 +49,8 @@ var Main = React.createClass({
     }.bind(this));
   },
   //lets children update to parent
-  setTerm: function(term){
-    this.setState({ search: term });
+  setSearch: function(topic, startYear, endYear){
+    this.setState({ search: [topic, startYear, endYear] });
   },
   //Render the function
   render: function(){
@@ -58,14 +58,14 @@ var Main = React.createClass({
       <div className="container">
 
         <div className="row">
-          <div className="card-panel panelTitle center-align">
-            <h2>New York Times Article Scrubber</h2>
+          <div className="card-panel z-depth-4 panelTitle center-align">
+            <h2>New York Times: Article Scrubber</h2>
             <h5>Search for and annotate articles of interest!</h5>
           </div>
         </div>
 
         <div className="row col s12">
-          <Search search={this.state.search} />
+          <Search search={this.setSearch} />
         </div>
 
         <div className="row col s12">

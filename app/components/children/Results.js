@@ -7,7 +7,7 @@ var Results = React.createClass({
   //Render the function
   render: function() {
     return (
-      <div className="panel card center-align">
+      <div className="panel card z-depth-4 center-align">
         <h3 className="panelTitle">Results</h3>
         
         <div className="resultBox">

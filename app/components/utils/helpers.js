@@ -4,9 +4,9 @@ var axios = require("axios");
 var nytAPI= "7ca69eff4bd346239efe73cfddb6ac75";
 
 var helper = {
-  runQuery: function(query) {
+  runQuery: function(topic, startYear, endYear) {
     console.log(query);
-    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + nytAPI + "&q="+ "&begin_date=" + query.startYear + "0101" + "&begin_date=" + query.endYear + "0231";
+    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + nytAPI + "&q="+ topic + "&begin_date=" + startYear + "0101" + "&begin_date=" + endYear + "0231";
     return axios.get(queryURL).then(function(response) {
       var results = [];
       // If get a result, return that result's formatted address property

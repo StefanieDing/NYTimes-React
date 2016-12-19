@@ -4,7 +4,7 @@ body{
 }
 
 .panelTitle{
-  background-color: #283593;
+  background-color: #3949ab;
   color: white;
 }
 
@@ -13,9 +13,5 @@ body{
 }
 
 .btn {
-  background-color: #283593;
-}
-
-.waves-effect .waves-light {
-  background-color: #3f51b5;
+  background-color: #3949ab;
 }
