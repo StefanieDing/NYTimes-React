@@ -43,6 +43,7 @@ var Main = React.createClass({
         <div className="row col s12">
           <Results results={this.state.results} />
         </div>
+
         <div className="row col s12">
           <Saved saved={this.state.saved} />
         </div>
