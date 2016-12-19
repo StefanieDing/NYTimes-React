@@ -11,7 +11,7 @@ var Results = React.createClass({
         <h3 className="panelTitle">Results</h3>
         
         <div className="resultBox card">
-          <h5 className="left-align">{this.props.results}<h5>
+          <h5 className="left-align">{this.props.results}</h5>
           <button className="waves-effect waves-light btn right-align">Save</button>
         </div>
       </div>

@@ -36,17 +36,17 @@ var Main = React.createClass({
           </div>
         </div>
 
-        // <div className="row col s12">
-        //   <Search search={this.state.search} />
-        // </div>
+        <div className="row col s12">
+          <Search search={this.state.search} />
+        </div>
 
-        // <div className="row col s12">
-        //   <Results results={this.state.results} />
-        // </div>
+        <div className="row col s12">
+          <Results results={this.state.results} />
+        </div>
 
-        // <div className="row col s12">
-        //   <Saved saved={this.state.saved} />
-        // </div>
+        <div className="row col s12">
+          <Saved saved={this.state.saved} />
+        </div>
 
       </div>
     );

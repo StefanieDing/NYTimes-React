@@ -23,26 +23,26 @@ var Search = React.createClass({
       <div className="panel card center-align">
         <h3 className="panelTitle">Search</h3>
 
-        <form className="card-panel col s8" onSubmit={this.handleSubmit}>
+        <form className="card-panel col s12" onSubmit={this.handleSubmit}>
           <div className="row">
             <div className="input-field">
-              <input type="text" placeholder="Topic" id="topic" onChange={this.handleChange} className="validate" required>
+              <input type="text" placeholder="Topic" id="topic" onChange={this.handleChange} className="validate" required></input>
             </div>
           </div>
 
           <div className="row">
             <div className="input-field">
-              <input type="text" placeholder="Start Year" id="startYear" onChange={this.handleChange} className="validate" required>
+              <input type="text" placeholder="Start Year" id="startYear" onChange={this.handleChange} className="validate" required></input>
             </div>
           </div>
 
           <div className="row">
             <div className="input-field">
-              <input type="text" placeholder="End Year" id="endYear" onChange={this.handleChange} className="validate" required>
+              <input type="text" placeholder="End Year" id="endYear" onChange={this.handleChange} className="validate" required></input>
             </div>
           </div>
 
-          <br>
+          <br></br>
           <button className="waves-effect waves-light btn" type="submit">Submit</button>
         </form>
 

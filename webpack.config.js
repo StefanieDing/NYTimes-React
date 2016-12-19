@@ -2,9 +2,8 @@ var webpack = require('webpack');
 var path = require('path');
 
 var config = {
-  entry: APP_DIR + './app/index.jsx',
+  entry: './app/index.js',
   output: {
-    path: BUILD_DIR,
     filename: 'public/bundle.js'
   },
    module : {

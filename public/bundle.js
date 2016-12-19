@@ -42,9 +42,9 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/*!***********************!*\
-  !*** ./app/index.jsx ***!
-  \***********************/
+/*!**********************!*\
+  !*** ./app/index.js ***!
+  \**********************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22009,7 +22009,7 @@
 	var React = __webpack_require__(/*! react */ 1);
 	
 	//sub-components
-	var Search = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./children/Search\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var Search = __webpack_require__(/*! ./children/Search */ 179);
 	var Results = __webpack_require__(/*! ./children/Results */ 180);
 	var Saved = __webpack_require__(/*! ./children/Saved */ 181);
 	
@@ -22053,29 +22053,20 @@
 	          )
 	        )
 	      ),
-	      "// ",
 	      React.createElement(
 	        "div",
 	        { className: "row col s12" },
-	        "//   ",
-	        React.createElement(Search, { search: this.state.search }),
-	        "// "
+	        React.createElement(Search, { search: this.state.search })
 	      ),
-	      "// ",
 	      React.createElement(
 	        "div",
 	        { className: "row col s12" },
-	        "//   ",
-	        React.createElement(Results, { results: this.state.results }),
-	        "// "
+	        React.createElement(Results, { results: this.state.results })
 	      ),
-	      "// ",
 	      React.createElement(
 	        "div",
 	        { className: "row col s12" },
-	        "//   ",
-	        React.createElement(Saved, { saved: this.state.saved }),
-	        "// "
+	        React.createElement(Saved, { saved: this.state.saved })
 	      )
 	    );
 	  }
@@ -22084,7 +22075,88 @@
 	module.exports = Main;
 
 /***/ },
-/* 179 */,
+/* 179 */
+/*!*******************************************!*\
+  !*** ./app/components/children/Search.js ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	// Include React
+	var React = __webpack_require__(/*! react */ 1);
+	
+	// Creating the Search component
+	var Search = React.createClass({
+	  displayName: "Search",
+	
+	
+	  getInitialState: function getInitialState() {
+	    return { topic: "", startYear: "", endYear: "" };
+	  },
+	  //this function will respond to user input
+	  handleChange: function handleChange(event) {},
+	  //function after user submits
+	  handleSubmit: function handleSubmit(event) {
+	    event.preventDefault();
+	
+	    //sends the parent the search parameters
+	  },
+	  // Render the function
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "panel card center-align" },
+	      React.createElement(
+	        "h3",
+	        { className: "panelTitle" },
+	        "Search"
+	      ),
+	      React.createElement(
+	        "form",
+	        { className: "card-panel col s8", onSubmit: this.handleSubmit },
+	        React.createElement(
+	          "div",
+	          { className: "row" },
+	          React.createElement(
+	            "div",
+	            { className: "input-field" },
+	            React.createElement("input", { type: "text", placeholder: "Topic", id: "topic", onChange: this.handleChange, className: "validate", required: true })
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "row" },
+	          React.createElement(
+	            "div",
+	            { className: "input-field" },
+	            React.createElement("input", { type: "text", placeholder: "Start Year", id: "startYear", onChange: this.handleChange, className: "validate", required: true })
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "row" },
+	          React.createElement(
+	            "div",
+	            { className: "input-field" },
+	            React.createElement("input", { type: "text", placeholder: "End Year", id: "endYear", onChange: this.handleChange, className: "validate", required: true })
+	          )
+	        ),
+	        React.createElement("br", null),
+	        React.createElement(
+	          "button",
+	          { className: "waves-effect waves-light btn", type: "submit" },
+	          "Submit"
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	// Export the component back for use in other files
+	module.exports = Search;
+
+/***/ },
 /* 180 */
 /*!********************************************!*\
   !*** ./app/components/children/Results.js ***!
@@ -22101,7 +22173,7 @@
 	  displayName: "Results",
 	
 	
-	  // Here we describe this component's render method
+	  //Render the function
 	  render: function render() {
 	    return React.createElement(
 	      "div",
@@ -22109,7 +22181,21 @@
 	      React.createElement(
 	        "h3",
 	        { className: "panelTitle" },
-	        "Search"
+	        "Results"
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "resultBox card" },
+	        React.createElement(
+	          "h5",
+	          { className: "left-align" },
+	          this.props.results
+	        ),
+	        React.createElement(
+	          "button",
+	          { className: "waves-effect waves-light btn right-align" },
+	          "Save"
+	        )
 	      )
 	    );
 	  }
@@ -22135,7 +22221,7 @@
 	  displayName: "Saved",
 	
 	
-	  // Here we describe this component's render method
+	  //Render the function
 	  render: function render() {
 	    return React.createElement(
 	      "div",
@@ -22143,7 +22229,21 @@
 	      React.createElement(
 	        "h3",
 	        { className: "panelTitle" },
-	        "Search"
+	        "Saved"
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "savedBox card" },
+	        React.createElement(
+	          "h5",
+	          { className: "left-align" },
+	          this.props.saved
+	        ),
+	        React.createElement(
+	          "button",
+	          { className: "waves-effect waves-light btn right-align" },
+	          "Remove"
+	        )
 	      )
 	    );
 	  }
@@ -22167,6 +22267,18 @@
 	var nytAPI = "";
 	
 	var helper = {
+	  runQuery: function runQuery(topic, startYear, endYear, callback) {
+	    axios({
+	      url: 'https://api.nytimes.com/svc/search/v2/articlesearch.json',
+	      qs: {
+	        'api-key': '7ca69eff4bd346239efe73cfddb6ac75',
+	        'q': topic,
+	        'begin_date': startYear + '0101',
+	        'end_date': endYear + '1231'
+	      }
+	
+	    });
+	  },
 	  getSaved: function getSaved() {
 	    return axios.get('/api/saved');
 	  },
