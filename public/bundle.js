@@ -22011,9 +22011,9 @@
 	//sub-components
 	var Search = __webpack_require__(/*! ./children/Search */ 179);
 	var Results = __webpack_require__(/*! ./children/Results */ 180);
-	var Saved = __webpack_require__(/*! ./children/Saved */ 181);
+	var Saved = __webpack_require__(/*! ./children/Saved */ 207);
 	
-	var helpers = __webpack_require__(/*! ./utils/helpers */ 182);
+	var helpers = __webpack_require__(/*! ./utils/helpers */ 181);
 	
 	//creating Main Component
 	var Main = React.createClass({
@@ -22026,19 +22026,18 @@
 	  componentDidMount: function componentDidMount() {
 	    //gets all saved articles
 	    helpers.getSaved().then(function (response) {
-	      console.log(response);
-	      if (response !== this.state.saved) {
-	        console.log("Saved", response.data);
-	        this.setState({ saved: response.data });
-	      }
+	      console.log("Saved: " + response.data);
+	      this.setState({ saved: response.data });
 	    }.bind(this));
 	  },
 	  //any time a component changes, it updates
-	  componentDidUpdate: function componentDidUpdate() {
-	    // Run the query for the address
-	    helpers.runQuery(this.state.search).then(function (data) {
-	      if (data !== this.state.results) {
-	        console.log("Results", data);
+	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	    var searchTerms = this.state.search;
+	    //only run API query if it doesn't equal previous state
+	    if (searchTerms != prevState.search) {
+	      // Run the query for the address
+	      helpers.runQuery(searchTerms[0], searchTerms[1], searchTerms[2]).then(function (data) {
+	        console.log("Results: " + data);
 	        this.setState({ results: data });
 	
 	        // After we've received the result... then post the search term to our history.
@@ -22054,8 +22053,8 @@
 	            this.setState({ saved: response.data });
 	          }.bind(this));
 	        }.bind(this));
-	      }
-	    }.bind(this));
+	      }.bind(this));
+	    }
 	  },
 	  //lets children update to parent
 	  setSearch: function setSearch(topic, startYear, endYear) {
@@ -22138,7 +22137,7 @@
 	  //function after user submits
 	  handleSubmit: function handleSubmit(event) {
 	    event.preventDefault();
-	
+	    console.log(this.state.topic);
 	    //sends the parent the search parameters
 	    this.props.setSearch(this.state.topic, this.state.startYear, this.state.endYear);
 	  },
@@ -22196,7 +22195,7 @@
 	// Include React
 	var React = __webpack_require__(/*! react */ 1);
 	
-	var helpers = __webpack_require__(/*! ../utils/helpers */ 182);
+	var helpers = __webpack_require__(/*! ../utils/helpers */ 181);
 	
 	// Creating the Results component
 	var Results = React.createClass({
@@ -22250,17 +22249,7 @@
 	              )
 	            )
 	          );
-	        }),
-	        React.createElement(
-	          "h5",
-	          { className: "left-align" },
-	          this.props.results
-	        ),
-	        React.createElement(
-	          "button",
-	          { className: "waves-effect waves-light btn right-align" },
-	          "Save"
-	        )
+	        })
 	      )
 	    );
 	  }
@@ -22271,84 +22260,6 @@
 
 /***/ },
 /* 181 */
-/*!******************************************!*\
-  !*** ./app/components/children/Saved.js ***!
-  \******************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	// Include React
-	var React = __webpack_require__(/*! react */ 1);
-	
-	var helpers = __webpack_require__(/*! ../utils/helpers */ 182);
-	
-	// Creating the Saved component
-	var Saved = React.createClass({
-	  displayName: "Saved",
-	
-	  //delete saved article
-	  handleDelete: function handleDelete(event) {
-	    var articleID = event.target.value;
-	
-	    helpers.deleteSaved(articleID).then(function (response) {
-	      console.log("Deleted article");
-	    }.bind(this));
-	  },
-	
-	  //Render the function
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "panel card z-depth-4 center-align" },
-	      React.createElement(
-	        "h3",
-	        { className: "panelTitle" },
-	        "Saved"
-	      ),
-	      React.createElement(
-	        "div",
-	        { className: "savedBox" },
-	        this.props.saved.map(function (search, i) {
-	          return React.createElement(
-	            "li",
-	            { key: search._id },
-	            React.createElement(
-	              "strong",
-	              null,
-	              React.createElement(
-	                "a",
-	                { href: search.web_url, className: "left-align", target: "_blank" },
-	                search.title
-	              )
-	            ),
-	            React.createElement(
-	              "i",
-	              null,
-	              " ",
-	              search.pub_date.substring(0, 10)
-	            ),
-	            React.createElement(
-	              "span",
-	              null,
-	              React.createElement(
-	                "button",
-	                { className: "waves-effect waves-light btn right-align", onClick: this.handleDelete, value: search._id },
-	                "Remove"
-	              )
-	            )
-	          );
-	        })
-	      )
-	    );
-	  }
-	});
-	
-	// Export the component back for use in other files
-	module.exports = Saved;
-
-/***/ },
-/* 182 */
 /*!*****************************************!*\
   !*** ./app/components/utils/helpers.js ***!
   \*****************************************/
@@ -22356,7 +22267,7 @@
 
 	"use strict";
 	
-	var axios = __webpack_require__(/*! axios */ 183);
+	var axios = __webpack_require__(/*! axios */ 182);
 	
 	//NYT API key
 	var nytAPI = "7ca69eff4bd346239efe73cfddb6ac75";
@@ -22395,16 +22306,16 @@
 	module.exports = helper;
 
 /***/ },
-/* 183 */
+/* 182 */
 /*!**************************!*\
   !*** ./~/axios/index.js ***!
   \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! ./lib/axios */ 184);
+	module.exports = __webpack_require__(/*! ./lib/axios */ 183);
 
 /***/ },
-/* 184 */
+/* 183 */
 /*!******************************!*\
   !*** ./~/axios/lib/axios.js ***!
   \******************************/
@@ -22412,10 +22323,10 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./utils */ 185);
-	var bind = __webpack_require__(/*! ./helpers/bind */ 186);
-	var Axios = __webpack_require__(/*! ./core/Axios */ 187);
-	var defaults = __webpack_require__(/*! ./defaults */ 188);
+	var utils = __webpack_require__(/*! ./utils */ 184);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 185);
+	var Axios = __webpack_require__(/*! ./core/Axios */ 186);
+	var defaults = __webpack_require__(/*! ./defaults */ 187);
 	
 	/**
 	 * Create an instance of Axios
@@ -22448,15 +22359,15 @@
 	};
 	
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ 205);
-	axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ 206);
-	axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ 202);
+	axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ 204);
+	axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ 205);
+	axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ 201);
 	
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(/*! ./helpers/spread */ 207);
+	axios.spread = __webpack_require__(/*! ./helpers/spread */ 206);
 	
 	module.exports = axios;
 	
@@ -22465,7 +22376,7 @@
 
 
 /***/ },
-/* 185 */
+/* 184 */
 /*!******************************!*\
   !*** ./~/axios/lib/utils.js ***!
   \******************************/
@@ -22473,7 +22384,7 @@
 
 	'use strict';
 	
-	var bind = __webpack_require__(/*! ./helpers/bind */ 186);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 185);
 	
 	/*global toString:true*/
 	
@@ -22773,7 +22684,7 @@
 
 
 /***/ },
-/* 186 */
+/* 185 */
 /*!*************************************!*\
   !*** ./~/axios/lib/helpers/bind.js ***!
   \*************************************/
@@ -22793,7 +22704,7 @@
 
 
 /***/ },
-/* 187 */
+/* 186 */
 /*!***********************************!*\
   !*** ./~/axios/lib/core/Axios.js ***!
   \***********************************/
@@ -22801,12 +22712,12 @@
 
 	'use strict';
 	
-	var defaults = __webpack_require__(/*! ./../defaults */ 188);
-	var utils = __webpack_require__(/*! ./../utils */ 185);
-	var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ 199);
-	var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ 200);
-	var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 203);
-	var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 204);
+	var defaults = __webpack_require__(/*! ./../defaults */ 187);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
+	var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ 198);
+	var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ 199);
+	var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 202);
+	var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 203);
 	
 	/**
 	 * Create a new instance of Axios
@@ -22887,7 +22798,7 @@
 
 
 /***/ },
-/* 188 */
+/* 187 */
 /*!*********************************!*\
   !*** ./~/axios/lib/defaults.js ***!
   \*********************************/
@@ -22895,8 +22806,8 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(/*! ./utils */ 185);
-	var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ 189);
+	var utils = __webpack_require__(/*! ./utils */ 184);
+	var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ 188);
 	
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -22913,10 +22824,10 @@
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(/*! ./adapters/xhr */ 190);
+	    adapter = __webpack_require__(/*! ./adapters/xhr */ 189);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(/*! ./adapters/http */ 190);
+	    adapter = __webpack_require__(/*! ./adapters/http */ 189);
 	  }
 	  return adapter;
 	}
@@ -22990,7 +22901,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 3)))
 
 /***/ },
-/* 189 */
+/* 188 */
 /*!****************************************************!*\
   !*** ./~/axios/lib/helpers/normalizeHeaderName.js ***!
   \****************************************************/
@@ -22998,7 +22909,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ../utils */ 185);
+	var utils = __webpack_require__(/*! ../utils */ 184);
 	
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -23011,7 +22922,7 @@
 
 
 /***/ },
-/* 190 */
+/* 189 */
 /*!*************************************!*\
   !*** ./~/axios/lib/adapters/xhr.js ***!
   \*************************************/
@@ -23019,13 +22930,13 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 185);
-	var settle = __webpack_require__(/*! ./../core/settle */ 191);
-	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 194);
-	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 195);
-	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 196);
-	var createError = __webpack_require__(/*! ../core/createError */ 192);
-	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(/*! ./../helpers/btoa */ 197);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
+	var settle = __webpack_require__(/*! ./../core/settle */ 190);
+	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 193);
+	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 194);
+	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 195);
+	var createError = __webpack_require__(/*! ../core/createError */ 191);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(/*! ./../helpers/btoa */ 196);
 	
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -23121,7 +23032,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(/*! ./../helpers/cookies */ 198);
+	      var cookies = __webpack_require__(/*! ./../helpers/cookies */ 197);
 	
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -23198,7 +23109,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ },
-/* 191 */
+/* 190 */
 /*!************************************!*\
   !*** ./~/axios/lib/core/settle.js ***!
   \************************************/
@@ -23206,7 +23117,7 @@
 
 	'use strict';
 	
-	var createError = __webpack_require__(/*! ./createError */ 192);
+	var createError = __webpack_require__(/*! ./createError */ 191);
 	
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -23232,7 +23143,7 @@
 
 
 /***/ },
-/* 192 */
+/* 191 */
 /*!*****************************************!*\
   !*** ./~/axios/lib/core/createError.js ***!
   \*****************************************/
@@ -23240,7 +23151,7 @@
 
 	'use strict';
 	
-	var enhanceError = __webpack_require__(/*! ./enhanceError */ 193);
+	var enhanceError = __webpack_require__(/*! ./enhanceError */ 192);
 	
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -23258,7 +23169,7 @@
 
 
 /***/ },
-/* 193 */
+/* 192 */
 /*!******************************************!*\
   !*** ./~/axios/lib/core/enhanceError.js ***!
   \******************************************/
@@ -23286,7 +23197,7 @@
 
 
 /***/ },
-/* 194 */
+/* 193 */
 /*!*****************************************!*\
   !*** ./~/axios/lib/helpers/buildURL.js ***!
   \*****************************************/
@@ -23294,7 +23205,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 185);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
 	
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -23363,7 +23274,7 @@
 
 
 /***/ },
-/* 195 */
+/* 194 */
 /*!*********************************************!*\
   !*** ./~/axios/lib/helpers/parseHeaders.js ***!
   \*********************************************/
@@ -23371,7 +23282,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 185);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
 	
 	/**
 	 * Parse headers into an object
@@ -23409,7 +23320,7 @@
 
 
 /***/ },
-/* 196 */
+/* 195 */
 /*!************************************************!*\
   !*** ./~/axios/lib/helpers/isURLSameOrigin.js ***!
   \************************************************/
@@ -23417,7 +23328,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 185);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -23486,7 +23397,7 @@
 
 
 /***/ },
-/* 197 */
+/* 196 */
 /*!*************************************!*\
   !*** ./~/axios/lib/helpers/btoa.js ***!
   \*************************************/
@@ -23531,7 +23442,7 @@
 
 
 /***/ },
-/* 198 */
+/* 197 */
 /*!****************************************!*\
   !*** ./~/axios/lib/helpers/cookies.js ***!
   \****************************************/
@@ -23539,7 +23450,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 185);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -23593,7 +23504,7 @@
 
 
 /***/ },
-/* 199 */
+/* 198 */
 /*!************************************************!*\
   !*** ./~/axios/lib/core/InterceptorManager.js ***!
   \************************************************/
@@ -23601,7 +23512,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 185);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
 	
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -23654,7 +23565,7 @@
 
 
 /***/ },
-/* 200 */
+/* 199 */
 /*!*********************************************!*\
   !*** ./~/axios/lib/core/dispatchRequest.js ***!
   \*********************************************/
@@ -23662,10 +23573,10 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 185);
-	var transformData = __webpack_require__(/*! ./transformData */ 201);
-	var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 202);
-	var defaults = __webpack_require__(/*! ../defaults */ 188);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
+	var transformData = __webpack_require__(/*! ./transformData */ 200);
+	var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 201);
+	var defaults = __webpack_require__(/*! ../defaults */ 187);
 	
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -23742,7 +23653,7 @@
 
 
 /***/ },
-/* 201 */
+/* 200 */
 /*!*******************************************!*\
   !*** ./~/axios/lib/core/transformData.js ***!
   \*******************************************/
@@ -23750,7 +23661,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 185);
+	var utils = __webpack_require__(/*! ./../utils */ 184);
 	
 	/**
 	 * Transform the data for a request or a response
@@ -23771,7 +23682,7 @@
 
 
 /***/ },
-/* 202 */
+/* 201 */
 /*!****************************************!*\
   !*** ./~/axios/lib/cancel/isCancel.js ***!
   \****************************************/
@@ -23785,7 +23696,7 @@
 
 
 /***/ },
-/* 203 */
+/* 202 */
 /*!**********************************************!*\
   !*** ./~/axios/lib/helpers/isAbsoluteURL.js ***!
   \**********************************************/
@@ -23808,7 +23719,7 @@
 
 
 /***/ },
-/* 204 */
+/* 203 */
 /*!********************************************!*\
   !*** ./~/axios/lib/helpers/combineURLs.js ***!
   \********************************************/
@@ -23829,7 +23740,7 @@
 
 
 /***/ },
-/* 205 */
+/* 204 */
 /*!**************************************!*\
   !*** ./~/axios/lib/cancel/Cancel.js ***!
   \**************************************/
@@ -23857,7 +23768,7 @@
 
 
 /***/ },
-/* 206 */
+/* 205 */
 /*!*******************************************!*\
   !*** ./~/axios/lib/cancel/CancelToken.js ***!
   \*******************************************/
@@ -23865,7 +23776,7 @@
 
 	'use strict';
 	
-	var Cancel = __webpack_require__(/*! ./Cancel */ 205);
+	var Cancel = __webpack_require__(/*! ./Cancel */ 204);
 	
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -23923,7 +23834,7 @@
 
 
 /***/ },
-/* 207 */
+/* 206 */
 /*!***************************************!*\
   !*** ./~/axios/lib/helpers/spread.js ***!
   \***************************************/
@@ -23957,6 +23868,84 @@
 	  };
 	};
 
+
+/***/ },
+/* 207 */
+/*!******************************************!*\
+  !*** ./app/components/children/Saved.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	// Include React
+	var React = __webpack_require__(/*! react */ 1);
+	
+	var helpers = __webpack_require__(/*! ../utils/helpers */ 181);
+	
+	// Creating the Saved component
+	var Saved = React.createClass({
+	  displayName: "Saved",
+	
+	  //delete saved article
+	  handleDelete: function handleDelete(event) {
+	    var articleID = event.target.value;
+	
+	    helpers.deleteSaved(articleID).then(function (response) {
+	      console.log("Deleted article");
+	    }.bind(this));
+	  },
+	
+	  //Render the function
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "panel card z-depth-4 center-align" },
+	      React.createElement(
+	        "h3",
+	        { className: "panelTitle" },
+	        "Saved"
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "savedBox" },
+	        this.props.saved.map(function (search, i) {
+	          return React.createElement(
+	            "li",
+	            { key: search._id },
+	            React.createElement(
+	              "strong",
+	              null,
+	              React.createElement(
+	                "a",
+	                { href: search.web_url, className: "left-align", target: "_blank" },
+	                search.title
+	              )
+	            ),
+	            React.createElement(
+	              "i",
+	              null,
+	              " ",
+	              search.pub_date.substring(0, 10)
+	            ),
+	            React.createElement(
+	              "span",
+	              null,
+	              React.createElement(
+	                "button",
+	                { className: "waves-effect waves-light btn right-align", onClick: this.handleDelete, value: search._id },
+	                "Remove"
+	              )
+	            )
+	          );
+	        })
+	      )
+	    );
+	  }
+	});
+	
+	// Export the component back for use in other files
+	module.exports = Saved;
 
 /***/ }
 /******/ ]);

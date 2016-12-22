@@ -20,7 +20,6 @@ var Search = React.createClass({
   //function after user submits
   handleSubmit: function(event) {
     event.preventDefault();
-
     //sends the parent the search parameters
     this.props.setSearch(this.state.topic, this.state.startYear, this.state.endYear);
   },
@@ -31,11 +30,11 @@ var Search = React.createClass({
         <h3 className="panelTitle">Search</h3>
 
         <form className="card-panel" onSubmit={this.handleSubmit}>
-         
+
           <div className="input-field">
             <input type="text" placeholder="Topic (required)" id="topic" onChange={this.handleTopicChange} className="validate" required></input>
           </div>
-       
+
           <div className="input-field">
             <input type="number" maxlength="4" placeholder="Start Year (required)" id="startYear" onChange={this.handleStartChange} className="validate" required></input>
           </div>
@@ -43,7 +42,7 @@ var Search = React.createClass({
           <div className="input-field">
             <input type="number" maxlength="4" placeholder="End Year (required)" id="endYear" onChange={this.handleEndChange} className="validate" required></input>
           </div>
-       
+
           <br></br>
           <button className="waves-effect waves-light btn" type="submit">Submit</button>
         </form>

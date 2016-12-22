@@ -1,7 +1,7 @@
 // Include React
 var React = require("react");
 
-var helpers = require("../utils/helpers");
+var helpers = require("../utils/helpers.js");
 
 // Creating the Results component
 var Results = React.createClass({
@@ -29,8 +29,6 @@ var Results = React.createClass({
                   </li>
                 );
               })}
-          <h5 className="left-align">{this.props.results}</h5>
-          <button className="waves-effect waves-light btn right-align">Save</button>
         </div>
       </div>
     );

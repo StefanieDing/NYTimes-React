@@ -46,6 +46,7 @@ app.get("/api/saved", function(req, res){
 });
 
 app.post("/api/saved", function(req, res){
+  console.log('BODY: ' + req.body.article);
   Article.create({
     title: req.body.title,
     date: Date.now(),
@@ -54,7 +55,7 @@ app.post("/api/saved", function(req, res){
     if(err){
       console.log(err);
     } else{
-      res.send("Saved Your Article");
+      res.send("Saved Article");
     }
   });
 });

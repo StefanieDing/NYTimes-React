@@ -1,7 +1,7 @@
 // Include React
 var React = require("react");
 
-var helpers = require("../utils/helpers");
+var helpers = require("../utils/helpers.js");
 
 // Creating the Saved component
 var Saved = React.createClass({
