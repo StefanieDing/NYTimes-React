@@ -63,7 +63,7 @@ var Main = React.createClass({
         </div>
 
         <div className="row col s12">
-          <Search search={this.setSearch} />
+          <Search setSearch={this.setSearch} />
         </div>
 
         <div className="row col s12">
