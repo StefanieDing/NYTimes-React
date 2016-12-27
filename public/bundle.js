@@ -22009,11 +22009,11 @@
 	var React = __webpack_require__(/*! react */ 1);
 	
 	//sub-components
-	var Search = __webpack_require__(/*! ./children/Search */ 179);
-	var Results = __webpack_require__(/*! ./children/Results */ 180);
-	var Saved = __webpack_require__(/*! ./children/Saved */ 207);
+	var Search = __webpack_require__(/*! ./children/Search.js */ 179);
+	var Results = __webpack_require__(/*! ./children/Results.js */ 180);
+	var Saved = __webpack_require__(/*! ./children/Saved.js */ 207);
 	
-	var helpers = __webpack_require__(/*! ./utils/helpers */ 181);
+	var helpers = __webpack_require__(/*! ./utils/helpers.js */ 181);
 	
 	//creating Main Component
 	var Main = React.createClass({
@@ -22031,13 +22031,12 @@
 	    }.bind(this));
 	  },
 	  //any time a component changes, it updates
-	  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	  componentDidUpdate: function componentDidUpdate() {
 	    var searchTerms = this.state.search;
-	    //only run API query if it doesn't equal previous state
-	    if (searchTerms != prevState.search) {
-	      // Run the query for the address
-	      helpers.runQuery(searchTerms[0], searchTerms[1], searchTerms[2]).then(function (data) {
-	        console.log("Results: " + data);
+	    // Run the query for the address
+	    helpers.runQuery(searchTerms[0], searchTerms[1], searchTerms[2]).then(function (data) {
+	      if (data !== this.state.results) {
+	        console.log("Results," + data);
 	        this.setState({ results: data });
 	
 	        // After we've received the result... then post the search term to our history.
@@ -22053,8 +22052,8 @@
 	            this.setState({ saved: response.data });
 	          }.bind(this));
 	        }.bind(this));
-	      }.bind(this));
-	    }
+	      }
+	    }.bind(this));
 	  },
 	  //lets children update to parent
 	  setSearch: function setSearch(topic, startYear, endYear) {
@@ -22086,7 +22085,7 @@
 	      React.createElement(
 	        "div",
 	        { className: "row col s12" },
-	        React.createElement(Search, { search: this.setSearch })
+	        React.createElement(Search, { setSearch: this.setSearch })
 	      ),
 	      React.createElement(
 	        "div",
@@ -22136,8 +22135,9 @@
 	  },
 	  //function after user submits
 	  handleSubmit: function handleSubmit(event) {
-	    event.preventDefault();
+	    console.log('CLICKED!');
 	    console.log(this.state.topic);
+	    event.preventDefault();
 	    //sends the parent the search parameters
 	    this.props.setSearch(this.state.topic, this.state.startYear, this.state.endYear);
 	  },
@@ -22153,7 +22153,7 @@
 	      ),
 	      React.createElement(
 	        "form",
-	        { className: "card-panel", onSubmit: this.handleSubmit },
+	        { className: "card-panel" },
 	        React.createElement(
 	          "div",
 	          { className: "input-field" },
@@ -22172,7 +22172,7 @@
 	        React.createElement("br", null),
 	        React.createElement(
 	          "button",
-	          { className: "waves-effect waves-light btn", type: "submit" },
+	          { className: "waves-effect waves-light btn", type: "submit", onSubmit: this.handleSubmit },
 	          "Submit"
 	        )
 	      )
@@ -22195,7 +22195,7 @@
 	// Include React
 	var React = __webpack_require__(/*! react */ 1);
 	
-	var helpers = __webpack_require__(/*! ../utils/helpers */ 181);
+	var helpers = __webpack_require__(/*! ../utils/helpers.js */ 181);
 	
 	// Creating the Results component
 	var Results = React.createClass({
@@ -22274,8 +22274,8 @@
 	
 	var helper = {
 	  runQuery: function runQuery(topic, startYear, endYear) {
-	    console.log(query);
-	    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + nytAPI + "&q=" + topic + "&begin_date=" + startYear + "0101" + "&begin_date=" + endYear + "0231";
+	    console.log("SEARCHING FOR " + topic);
+	    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + nytAPI + "&q=" + topic + "&begin_date=" + startYear + "0101" + "&end_date=" + endYear + "1231";
 	    return axios.get(queryURL).then(function (response) {
 	      var results = [];
 	      // If get a result, return that result's formatted address property
@@ -22283,6 +22283,7 @@
 	        for (var i = 0; i < 5; i++) {
 	          results.push(response.data.results[i].formatted);
 	        }
+	        console.log(results);
 	        return results;
 	      } else {
 	        // If we don't get any results, return an empty string
@@ -22295,7 +22296,7 @@
 	  },
 	
 	  postSaved: function postSaved(article) {
-	    return axios.post('/api/saved', article);
+	    return axios.post('/api/saved', { article: article });
 	  },
 	
 	  deleteSaved: function deleteSaved(id) {
@@ -23881,7 +23882,7 @@
 	// Include React
 	var React = __webpack_require__(/*! react */ 1);
 	
-	var helpers = __webpack_require__(/*! ../utils/helpers */ 181);
+	var helpers = __webpack_require__(/*! ../utils/helpers.js */ 181);
 	
 	// Creating the Saved component
 	var Saved = React.createClass({

@@ -1,17 +1,14 @@
-var webpack = require('webpack');
-var path = require('path');
-
-var config = {
-  entry: './app/index.js',
+module.exports = {
+  entry: "./app/app.js",
   output: {
-    filename: 'public/bundle.js'
+    filename: "public/bundle.js"
   },
    module : {
     loaders : [
       {
         test : /\.jsx?/,
         include : /app/,
-        loader : 'babel',
+        loader : "babel"
         query: {
           // These are the specific transformations we'll be using.
           presets: ["react", "es2015"]
@@ -24,4 +21,4 @@ var config = {
   devtool: "eval-source-map"
 };
 
-module.exports = config;
+// module.exports = config;

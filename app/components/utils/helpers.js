@@ -14,6 +14,7 @@ var helper = {
         for(var i = 0; i<5; i++){
           results.push(response.data.results[i].formatted);
         }
+        console.log(results);
         return results;
       } else{
         // If we don't get any results, return an empty string
