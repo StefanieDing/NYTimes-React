@@ -1,8 +1,8 @@
 //dependencies
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var logger = require('morgan');
-var express = require('express');
+var express = require("express");
+var bodyParser = require("body-parser");
+var logger = require("morgan");
+var mongoose = require("mongoose");
 
 //initialize Express app
 var app = express();
@@ -18,7 +18,7 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(express.static('./public'));
 
 //connecting to MongoDB
-mongoose.connect('mongodb://localhost/nyt_articles');
+mongoose.connect("mongodb://localhost/nyt_articles");
 var db = mongoose.connection;
 
 db.on('error', function(err){
@@ -40,6 +40,7 @@ app.get("/api/saved", function(req, res){
     if(err){
       console.log(err);
     } else{
+      console.log(doc);
       res.send(doc);
     }
   });
